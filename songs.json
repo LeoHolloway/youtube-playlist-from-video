@@ -1,0 +1,37 @@
+{
+  "dQw4w9WgXcQ": {
+    "title": "Example Video",
+    "songs": [
+      {
+        "title": "Song 1",
+        "startTime": 0,
+        "endTime": 180
+      },
+      {
+        "title": "Song 2",
+        "startTime": 180,
+        "endTime": 360
+      },
+      {
+        "title": "Song 3",
+        "startTime": 360,
+        "endTime": 540
+      }
+    ]
+  },
+  "VIDEO_ID_HERE": {
+    "title": "Your Video Title",
+    "songs": [
+      {
+        "title": "First Song Name",
+        "startTime": 15,
+        "endTime": 195
+      },
+      {
+        "title": "Second Song Name",
+        "startTime": 195,
+        "endTime": 380
+      }
+    ]
+  }
+}

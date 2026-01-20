@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Song Shuffler",
+  "version": "0.1",
+  "description": "Shuffle through songs in long YouTube videos",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/watch*"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["songs.json"],
+      "matches": ["*://*.youtube.com/*"]
+    }
+  ]
+}
