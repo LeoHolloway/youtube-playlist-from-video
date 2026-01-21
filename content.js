@@ -41,6 +41,7 @@ function getVideoId() {
 async function loadSongs() {
   try {
     // Load songs from songs.json in extension directory
+    // TODO: Check for issues from old tech
     const response = await fetch(chrome.runtime.getURL('songs.json'));
     return await response.json();
   } catch (error) {
