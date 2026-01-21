@@ -40,13 +40,7 @@ function getVideoId() {
 // Load songs data
 async function loadSongs() {
   try {
-    // First try to load from chrome.storage (user's custom data)
-    const result = await chrome.storage.local.get(['songsData']);
-    if (result.songsData) {
-      return result.songsData;
-    }
-    
-    // Fallback to default songs.json
+    // Load songs from songs.json in extension directory
     const response = await fetch(chrome.runtime.getURL('songs.json'));
     return await response.json();
   } catch (error) {
@@ -93,7 +87,7 @@ class YouTubeSongShuffler {
     shufflePanel.id = 'yt-shuffle-panel';
     shufflePanel.innerHTML = `
       <div class="shuffle-header">
-        <span class="shuffle-title">🎵 Song Shuffler</span>
+        <span class="shuffle-title"> Song Shuffler</span>
         <button id="shuffle-toggle" class="shuffle-btn">▼</button>
       </div>
       <div class="shuffle-content" style="display: none;">
@@ -102,9 +96,10 @@ class YouTubeSongShuffler {
           <span id="current-song">No song playing</span>
         </div>
         <div class="shuffle-controls">
-          <button id="shuffle-play" class="control-btn">🔀 Shuffle</button>
-          <button id="next-song" class="control-btn">⏭ Next</button>
+          <button id="shuffle-play" class="control-btn"> Shuffle</button>
           <button id="prev-song" class="control-btn">⏮ Previous</button>
+          <button id="next-song" class="control-btn">⏭ Next</button>
+          
         </div>
         <div class="shuffle-playlist">
           <div id="song-list"></div>
@@ -152,14 +147,14 @@ class YouTubeSongShuffler {
       this.shuffleAndPlay();
     });
     
-    // Next button
-    document.getElementById('next-song')?.addEventListener('click', () => {
-      this.playNext();
-    });
-    
     // Previous button
     document.getElementById('prev-song')?.addEventListener('click', () => {
       this.playPrevious();
+    });
+
+    // Next button
+    document.getElementById('next-song')?.addEventListener('click', () => {
+      this.playNext();
     });
     
     // Listen for video end to auto-play next song
@@ -201,10 +196,21 @@ class YouTubeSongShuffler {
   playNext() {
     if (this.currentSongs.length === 0) return;
     
-    this.currentIndex = (this.currentIndex + 1) % this.currentSongs.length;
-    this.playSong(this.currentIndex);
+    if (!this.isShuffling) {
+      this.currentIndex = (this.currentIndex + 1) % this.currentSongs.length;
+      this.playSong(this.currentIndex);
+    } else {
+      let nextIndex;
+      do {
+        nextIndex = Math.floor(Math.random() * this.currentSongs.length);
+      } while (nextIndex === this.currentIndex && this.currentSongs.length > 1);    
+      this.currentIndex = nextIndex;
+      this.playSong(this.currentIndex);
+    }
   }
   
+
+
   playPrevious() {
     if (this.currentSongs.length === 0) return;
     
@@ -258,6 +264,7 @@ class YouTubeSongShuffler {
       item.addEventListener('click', () => {
         const index = parseInt(item.dataset.index);
         this.currentIndex = index;
+        isShuffling = false; // Stop shuffling when user selects a song
         this.playSong(index);
       });
     });
