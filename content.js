@@ -156,7 +156,7 @@ class YouTubeSongShuffler {
     document.getElementById('next-song')?.addEventListener('click', () => {
       this.playNext();
     });
-    
+
     // Listen for video end to auto-play next song
     setInterval(() => {
       if (this.isShuffling) {
@@ -193,7 +193,7 @@ class YouTubeSongShuffler {
     this.playSong(this.currentIndex);
   }
   
-  playNext() {
+  playNext() { //handles shuffle
     if (this.currentSongs.length === 0) return;
     
     if (!this.isShuffling) {
